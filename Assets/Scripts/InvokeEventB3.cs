@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using TreeSharpPlus;
 
 public class InvokeEventB3 : MonoBehaviour {
@@ -8,6 +9,7 @@ public class InvokeEventB3 : MonoBehaviour {
     public GameObject Daniel;
     public GameObject Richard;
     public GameObject Ethan;
+	public GameObject Ball;
 
     public GameObject Point1;
     public GameObject Point2;
@@ -133,20 +135,34 @@ public class InvokeEventB3 : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
+		behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
         BehaviorManager.Instance.Register(behaviorAgent);
         behaviorAgent.StartBehavior();
+		print (Vector3.zero);
     }
 
     protected Node BuildTreeRoot()
     {
         return new Sequence(
-            this.GreetingTree(),
+        	this.GreetingTree(),
             this.DanceTree());
+
     }
-	
+
+	protected Node ChaseBall()
+	{
+		Func<bool> act = () => (Ball.GetComponent<Rigidbody>().velocity.magnitude > 0.5);
+		Node trigger = new DecoratorLoop (new LeafAssert (act));
+		Node chasing = new DecoratorLoop (
+			new SequenceParallel(
+				Daniel.GetComponent<BehaviorMecanim>().Node_GoTo(Val.V(() => Ball.transform.position)),
+				Richard.GetComponent<BehaviorMecanim>().Node_GoTo(Val.V(() => Ball.transform.position)),
+				Ethan.GetComponent<BehaviorMecanim>().Node_GoTo(Val.V(() => Ball.transform.position))));
+		Node root = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger, chasing)));
+		return root;
+	}
+
 	// Update is called once per frame
 	void Update () {
-		
 	}
 }

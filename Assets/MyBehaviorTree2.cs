@@ -34,7 +34,7 @@ public class MyBehaviorTree2 : MonoBehaviour
 
 	protected Node BuildTreeRoot()
 	{
-		Val<float> pp = Val.V (() => police.transform.position.z);
+		//Val<float> pp = Val.V (() => police.transform.position.z);
 		Func<bool> act = () => (police.transform.position.z > 10);
 		Node roaming = new DecoratorLoop (
 			new Sequence(
