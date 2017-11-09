@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1276,6 +1276,14 @@ Prefab:
     - target: {fileID: 11468454, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466882, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
+      propertyPath: solver.effectors.Array.data[0].positionWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466882, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
+      propertyPath: solver.effectors.Array.data[1].positionWeight
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
@@ -2664,7 +2672,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460094, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0.24
+      value: 4.73
       objectReference: {fileID: 0}
     - target: {fileID: 460094, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3153,6 +3161,7 @@ GameObject:
   - component: {fileID: 1800655713}
   - component: {fileID: 1800655712}
   - component: {fileID: 1800655711}
+  - component: {fileID: 1800655717}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -3245,12 +3254,56 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1800655710}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.72, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.13, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1800655717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1800655710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f425a4a83914b04af3f1642c000f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weightCurves: []
+  multipliers: []
+  otherLookAtTarget: {fileID: 0}
+  otherTargetsRoot: {fileID: 0}
+  pickUpOnTrigger: 1
+  pauseOnTrigger: 0
+  triggerTime: 0.3
+  releaseTime: 0.6
+  onStartAnimation:
+    animationState: 
+    crossfadeTime: 0.3
+    layer: 0
+    resetNormalizedTime: 0
+  onTriggerAnimation:
+    animationState: 
+    crossfadeTime: 0.3
+    layer: 0
+    resetNormalizedTime: 0
+  onReleaseAnimation:
+    animationState: 
+    crossfadeTime: 0.3
+    layer: 0
+    resetNormalizedTime: 0
+  onEndAnimation:
+    animationState: 
+    crossfadeTime: 0.3
+    layer: 0
+    resetNormalizedTime: 0
+  onInteractionStartRecipients: []
+  onInteractionTriggerRecipients: []
+  onInteractionReleaseRecipients: []
+  onInteractionEndRecipients: []
+  animator: {fileID: 0}
 --- !u!1 &1802138164
 GameObject:
   m_ObjectHideFlags: 0
@@ -3432,7 +3485,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460094, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -1.1
+      value: 20.43
       objectReference: {fileID: 0}
     - target: {fileID: 460094, guid: 933ad8229c2405e499b60c32a7f8b8a7, type: 2}
       propertyPath: m_LocalRotation.x
