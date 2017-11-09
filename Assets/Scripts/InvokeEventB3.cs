@@ -9,6 +9,7 @@ public class InvokeEventB3 : MonoBehaviour {
 	public GameObject Daniel;
 	public GameObject Richard;
 	public GameObject Ethan;
+	public GameObject Steven;
 
 	public GameObject Ball;
 
@@ -105,7 +106,7 @@ public class InvokeEventB3 : MonoBehaviour {
 				this.DanEthanGreeting()));
 	}
 
-	protected Node GoToSpotAndOrient(Val<Vector3> point1, Val<Vector3> point2, Val<Vector3> point3, Val<Vector3> point4, Val<Vector3> point5, Val<Vector3> point6)
+	protected Node GoToSpotAndOrient(Val<Vector3> point1, Val<Vector3> point2, Val<Vector3> point3, Val<Vector3> point4)
 	{
 		return new Sequence(
 			new SequenceParallel(
@@ -114,16 +115,16 @@ public class InvokeEventB3 : MonoBehaviour {
 				Ethan.GetComponent<BehaviorMecanim>().Node_GoTo(point3)),
 			new SequenceParallel(
 				Daniel.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4),
-				Richard.GetComponent<BehaviorMecanim>().Node_OrientTowards(point5),
-				Ethan.GetComponent<BehaviorMecanim>().Node_OrientTowards(point6)));
+				Richard.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4),
+				Ethan.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4)));
 	}
 
 	protected Node AllDance()
 	{
 		return new SequenceParallel(
-			Daniel.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance",20000),
-			Richard.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance", 20000),
-			Ethan.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance", 20000));
+			Daniel.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance", 10000),
+			Richard.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance", 10000),
+			Ethan.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Breakdance", 10000));
 	}
 
 	protected Node DanceTree()
@@ -132,12 +133,31 @@ public class InvokeEventB3 : MonoBehaviour {
 		Val<Vector3> point2 = Val.V(() => Point2.transform.position);
 		Val<Vector3> point3 = Val.V(() => Point3.transform.position);
 		Val<Vector3> point4 = Val.V(() => Point4.transform.position);
-		Val<Vector3> point5 = Val.V(() => Point6.transform.position);
-		Val<Vector3> point6 = Val.V(() => Point6.transform.position);
 
 		return new Sequence(
-			this.GoToSpotAndOrient(point1,point2,point3,point4,point5,point6),
+			this.GoToSpotAndOrient(point1,point2,point3,point4),
 			this.AllDance());
+	}
+
+	protected Node Summon()
+	{
+		Val<Vector3> point1 = Val.V(() => Point1.transform.position);
+		Val<Vector3> point2 = Val.V(() => Point2.transform.position);
+		Val<Vector3> point3 = Val.V(() => Point3.transform.position);
+		Val<Vector3> point4 = Val.V(() => Point4.transform.position);
+
+		return new SequenceParallel (
+			new Sequence (
+				new LeafInvoke (
+					() => Steven.SetActive (true)),
+				Steven.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("Roar", 2000),
+				Steven.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("Firebreath", 2500)),
+			new SequenceParallel (
+				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("WONDERFUL", 4500),
+				Richard.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("WONDERFUL", 4500),
+				Ethan.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("WONDERFUL", 4500)
+			)
+		);
 	}
 
 	// Use this for initialization
@@ -145,29 +165,16 @@ public class InvokeEventB3 : MonoBehaviour {
 		behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
 		BehaviorManager.Instance.Register(behaviorAgent);
 		behaviorAgent.StartBehavior();
-		print (Vector3.zero);
 	}
 
 	protected Node BuildTreeRoot()
 	{
 		return new Sequence(
-			this.DanceTree(),
+			
 			this.ChaseBall(),
 			this.FightTree(),
-			this.GreetingTree());
-	}
-
-	protected Node ChoosePhase2()
-	{
-		if(Ball.GetComponent<Rigidbody>().velocity.magnitude > 0.5)
-		{
-			return this.ChaseBall();
-		}
-		else
-		{
-			return this.FightTree();
-		}
-
+			this.DanceTree(),
+			this.Summon());
 	}
 
 	protected Node ChaseBall()
@@ -190,78 +197,34 @@ public class InvokeEventB3 : MonoBehaviour {
 
 	protected Node FightDR(Val<Vector3> DanielPos, Val<Vector3> RichardPos)
 	{
+		Val<Vector3> point1 = Val.V(() => Point1.transform.position);
+		Val<Vector3> point5 = Val.V(() => Point5.transform.position);
+		Val<Vector3> point6 = Val.V(() => Point6.transform.position);
+		Val<Vector3> point4 = Val.V(() => Point4.transform.position);
+
 		return new Sequence(
 			new SequenceParallel(
-				Daniel.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(RichardPos, 2.0f),
-				Richard.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(DanielPos, 2.0f)),
+				Daniel.GetComponent<BehaviorMecanim>().Node_GoTo(point5),
+				Richard.GetComponent<BehaviorMecanim>().Node_GoTo(point6),
+				Ethan.GetComponent<BehaviorMecanim>().Node_GoTo(point1)),
 			new SequenceParallel(
+				Daniel.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4),
+				Richard.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4),
+				Ethan.GetComponent<BehaviorMecanim>().Node_OrientTowards(point4)),
+			new SequenceParallel(
+				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Crowdpump", 2000),
 				Daniel.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("FIGHT", 2000),
 				Richard.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Fight", 2000)),
-			new Sequence(
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CUTTHROAT", 2000),
-				Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cry", 2000),
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cheer", 2000))
-		);
+			new SequenceParallel(
+				new Sequence(
+					Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Crowdpump", 2000),
+					Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("clap", 4000)),
+				new Sequence(
+					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CUTTHROAT", 2000),
+					Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cry", 2000),
+					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cheer", 2000))));
 
 	}
-
-	protected Node FightRE(Val<Vector3> EthanPos, Val<Vector3> RichardPos)
-	{
-		return new Sequence(
-			new SequenceParallel(
-				Ethan.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(RichardPos, 2.0f),
-				Richard.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(EthanPos, 2.0f)),
-			new SequenceParallel(
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Idle_Fight", 2000),
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Idle_Fight", 2000)),
-			new Sequence(
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000)));
-	}
-
-	protected Node FightDE(Val<Vector3> DanielPos, Val<Vector3> EthanPos)
-	{
-		return new Sequence(
-			new SequenceParallel(
-				Daniel.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(EthanPos, 2.0f),
-				Ethan.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(DanielPos, 2.0f)),
-			new SequenceParallel(
-				Daniel.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Idle_Fight", 2000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Idle_Fight", 2000)),
-			new Sequence(
-				Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000),
-				Ethan.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Bash", 1000)));
-
-	}
-
-	//protected Node DanielPickup()
-	//{
-	//    return new Sequence(
-	//        Daniel.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Ground_Pickup_Right", 160),
-	//        Daniel.GetComponent<BehaviorMecanim>().Node_StartInteraction(DanielEffector, Sphere));
-	//}
-
-	//protected Node RichardPickup()
-	//{
-	//    return new Sequence(
-	//        Richard.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Ground_Pickup_Right", 160),
-	//        Richard.GetComponent<BehaviorMecanim>().Node_StartInteraction(RichardEffector, Sphere));
-	//}
-
-	//protected Node EthanPickup()
-	//{
-	//    return new Sequence(
-	//        Ethan.GetComponent<BehaviorMecanim>().ST_PlayBodyGesture("Ground_Pickup_Right", 160),
-	//        Ethan.GetComponent<BehaviorMecanim>().Node_StartInteraction(EthanEffector, Sphere));
-	//}
 
 	// Update is called once per frame
 	void Update () {
