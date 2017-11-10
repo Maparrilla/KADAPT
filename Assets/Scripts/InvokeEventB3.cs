@@ -139,7 +139,7 @@ public class InvokeEventB3 : MonoBehaviour {
 			this.AllDance());
 	}
 
-	protected Node Summon()
+	protected Node SummonSteven()
 	{
 		Val<Vector3> point1 = Val.V(() => Point1.transform.position);
 		Val<Vector3> point2 = Val.V(() => Point2.transform.position);
@@ -148,8 +148,7 @@ public class InvokeEventB3 : MonoBehaviour {
 
 		return new SequenceParallel (
 			new Sequence (
-				new LeafInvoke (
-					() => Steven.SetActive (true)),
+				this.Summon(Steven),
 				Steven.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("Roar", 2000),
 				Steven.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("Firebreath", 2500)),
 			new SequenceParallel (
@@ -174,7 +173,7 @@ public class InvokeEventB3 : MonoBehaviour {
 			this.ChaseBall(),
 			this.FightTree(),
 			this.DanceTree(),
-			this.Summon());
+			this.SummonSteven());
 	}
 
 	protected Node ChaseBall()
@@ -186,16 +185,6 @@ public class InvokeEventB3 : MonoBehaviour {
 	}
 
 	protected Node FightTree()
-	{
-		Val<Vector3> DanielPos = Val.V(() => Daniel.transform.position);
-		Val<Vector3> RichardPos = Val.V(() => Richard.transform.position);
-		Val<Vector3> EthanPos = Val.V(() => Ethan.transform.position);
-
-		return new Sequence(
-			this.FightDR(DanielPos,RichardPos));
-	}
-
-	protected Node FightDR(Val<Vector3> DanielPos, Val<Vector3> RichardPos)
 	{
 		Val<Vector3> point1 = Val.V(() => Point1.transform.position);
 		Val<Vector3> point5 = Val.V(() => Point5.transform.position);
@@ -223,7 +212,12 @@ public class InvokeEventB3 : MonoBehaviour {
 					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CUTTHROAT", 2000),
 					Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cry", 2000),
 					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cheer", 2000))));
+	}
 
+	public Node Summon(GameObject targ)
+	{
+		return new LeafInvoke(
+			() => targ.SetActive(true));
 	}
 
 	// Update is called once per frame
