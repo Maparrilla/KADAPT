@@ -2303,6 +2303,7 @@ GameObject:
   - component: {fileID: 114522010825243484}
   - component: {fileID: 114212120974782124}
   - component: {fileID: 114714343766238854}
+  - component: {fileID: 114752605376542214}
   m_Layer: 0
   m_Name: Richard
   m_TagString: Untagged
@@ -6376,18 +6377,65 @@ MonoBehaviour:
   timeStep: 0
   fixTransforms: 1
   solver:
-    IKPosition: {x: 0, y: 0, z: 0}
+    IKPosition: {x: -2.1750236, y: 1.65764, z: 3.6622765}
     IKPositionWeight: 1
-    spine: []
+    spine:
+    - transform: {fileID: 400202}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.053878736, y: 0.000000004067728, z: -0.000000003725286}
+      defaultLocalRotation: {x: 0.000000054864795, y: -0.079202205, z: 0.000000034374168,
+        w: 0.9968586}
+      length: 0
+      axis: {x: 0.047981583, y: 0.00000059232116, z: 0.9988482}
+    - transform: {fileID: 400304}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.19275962, y: 0.000000011617576, z: -0.00012540072}
+      defaultLocalRotation: {x: -0.00000053580993, y: -0.08683424, z: 0.000000013832123,
+        w: 0.9962228}
+      length: 0
+      axis: {x: 0.22007129, y: -0.0000005811453, z: 0.9754838}
+    - transform: {fileID: 400298}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.18375577, y: 0.000000013882967, z: -0.00002123043}
+      defaultLocalRotation: {x: 0.0000004719642, y: 0.11071539, z: -6.315737e-10,
+        w: 0.9938522}
+      length: 0
+      axis: {x: 0.0000019010065, y: 0.0000004680133, z: 1}
+    - transform: {fileID: 400124}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.19709714, y: 0.000000014880397, z: -0.000000008546294}
+      defaultLocalRotation: {x: -0.00000030554762, y: 0.090723015, z: -0.000000026172659,
+        w: 0.9958762}
+      length: 0
+      axis: {x: -0.18069604, y: -0.00000011920929, z: 0.983539}
     head:
-      transform: {fileID: 0}
+      transform: {fileID: 400046}
       weight: 1
       solverPosition: {x: 0, y: 0, z: 0}
-      defaultLocalPosition: {x: 0, y: 0, z: 0}
-      defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0.10225469, y: 0.000000007720018, z: 0}
+      defaultLocalRotation: {x: 0.00000012465563, y: -0.08316034, z: 0.000000022149552,
+        w: 0.9965362}
       length: 0
-      axis: {x: -1, y: -0, z: -0}
-    eyes: []
+      axis: {x: -0.015180435, y: 0.000000173226, z: 0.9998848}
+    eyes:
+    - transform: {fileID: 400324}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.10662578, y: -0.034941036, z: 0.117987506}
+      defaultLocalRotation: {x: 0.71245635, y: -0.0000031184868, z: -0.7017164, w: -0.0000042344564}
+      length: 0
+      axis: {x: -1.0000005, y: -0.0000015497208, z: -0.00000834465}
+    - transform: {fileID: 400120}
+      weight: 0
+      solverPosition: {x: 0, y: 0, z: 0}
+      defaultLocalPosition: {x: -0.10662577, y: 0.034941103, z: 0.11798749}
+      defaultLocalRotation: {x: 0.7124565, y: 0.0000031413288, z: -0.70171624, w: 0.0000040460623}
+      length: 0
+      axis: {x: -1.0000002, y: 0.0000011622906, z: -0.000008523464}
     bodyWeight: 0.5
     headWeight: 0.5
     eyesWeight: 1
@@ -6413,3 +6461,412 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+--- !u!114 &114752605376542214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd5b6de647217ea4ea31d33a6aa8c816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeStep: 0
+  fixTransforms: 1
+  references:
+    root: {fileID: 400302}
+    pelvis: {fileID: 400078}
+    leftThigh: {fileID: 400190}
+    leftCalf: {fileID: 400250}
+    leftFoot: {fileID: 400082}
+    rightThigh: {fileID: 400116}
+    rightCalf: {fileID: 400040}
+    rightFoot: {fileID: 400220}
+    leftUpperArm: {fileID: 400008}
+    leftForearm: {fileID: 400094}
+    leftHand: {fileID: 400020}
+    rightUpperArm: {fileID: 400276}
+    rightForearm: {fileID: 400286}
+    rightHand: {fileID: 400158}
+    head: {fileID: 400046}
+    spine:
+    - {fileID: 400202}
+    - {fileID: 400304}
+    - {fileID: 400298}
+    eyes: []
+  solver:
+    IKPosition: {x: 0, y: 0, z: 0}
+    IKPositionWeight: 1
+    iterations: 4
+    chain:
+    - pin: 0
+      pull: 1
+      reach: 0.05
+      reachSmoothing: 0
+      nodes:
+      - transform: {fileID: 400304}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      children: 01000000020000000300000004000000
+      childConstraints:
+      - bone1: {fileID: 400008}
+        bone2: {fileID: 400116}
+        pushElasticity: 0
+        pullElasticity: 1
+      - bone1: {fileID: 400276}
+        bone2: {fileID: 400190}
+        pushElasticity: 0
+        pullElasticity: 1
+      - bone1: {fileID: 400008}
+        bone2: {fileID: 400276}
+        pushElasticity: 0
+        pullElasticity: 0
+      - bone1: {fileID: 400190}
+        bone2: {fileID: 400116}
+        pushElasticity: 0
+        pullElasticity: 0
+    - pin: 0
+      pull: 1
+      reach: 0.05
+      reachSmoothing: 0
+      nodes:
+      - transform: {fileID: 400008}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400094}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400020}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      children: 
+      childConstraints: []
+    - pin: 0
+      pull: 1
+      reach: 0.05
+      reachSmoothing: 0
+      nodes:
+      - transform: {fileID: 400276}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400286}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400158}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      children: 
+      childConstraints: []
+    - pin: 0
+      pull: 1
+      reach: 0.05
+      reachSmoothing: 0
+      nodes:
+      - transform: {fileID: 400190}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400250}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400082}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      children: 
+      childConstraints: []
+    - pin: 0
+      pull: 1
+      reach: 0.05
+      reachSmoothing: 0
+      nodes:
+      - transform: {fileID: 400116}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400040}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      - transform: {fileID: 400220}
+        weight: 1
+        solverPosition: {x: 0, y: 0, z: 0}
+        defaultLocalPosition: {x: 0, y: 0, z: 0}
+        defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+        length: 0
+        solverRotation: {x: 0, y: 0, z: 0, w: 1}
+        effectorPositionWeight: 0
+        effectorRotationWeight: 0
+        offset: {x: 0, y: 0, z: 0}
+      children: 
+      childConstraints: []
+    effectors:
+    - bone: {fileID: 400304}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones:
+      - {fileID: 400190}
+      - {fileID: 400116}
+      planeBone1: {fileID: 0}
+      planeBone2: {fileID: 0}
+      planeBone3: {fileID: 0}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400008}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 0}
+      planeBone2: {fileID: 0}
+      planeBone3: {fileID: 0}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400276}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 0}
+      planeBone2: {fileID: 0}
+      planeBone3: {fileID: 0}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400190}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 0}
+      planeBone2: {fileID: 0}
+      planeBone3: {fileID: 0}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400116}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 0}
+      planeBone2: {fileID: 0}
+      planeBone3: {fileID: 0}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400020}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 400008}
+      planeBone2: {fileID: 400276}
+      planeBone3: {fileID: 400304}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400158}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 400276}
+      planeBone2: {fileID: 400008}
+      planeBone3: {fileID: 400304}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400082}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 400190}
+      planeBone2: {fileID: 400116}
+      planeBone3: {fileID: 400304}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    - bone: {fileID: 400220}
+      positionWeight: 0
+      rotationWeight: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      positionOffset: {x: 0, y: 0, z: 0}
+      effectChildNodes: 1
+      maintainRelativePositionWeight: 0
+      childBones: []
+      planeBone1: {fileID: 400116}
+      planeBone2: {fileID: 400190}
+      planeBone3: {fileID: 400304}
+      planeRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+    bendConstraints:
+    - bone1: {fileID: 400008}
+      bone2: {fileID: 400094}
+      bone3: {fileID: 400020}
+      direction: {x: 1, y: 0, z: 0}
+      rotationOffset: {x: 0, y: 0, z: 0, w: 0}
+      weight: 0
+    - bone1: {fileID: 400276}
+      bone2: {fileID: 400286}
+      bone3: {fileID: 400158}
+      direction: {x: 1, y: 0, z: 0}
+      rotationOffset: {x: 0, y: 0, z: 0, w: 0}
+      weight: 0
+    - bone1: {fileID: 400190}
+      bone2: {fileID: 400250}
+      bone3: {fileID: 400082}
+      direction: {x: 1, y: 0, z: 0}
+      rotationOffset: {x: 0, y: 0, z: 0, w: 0}
+      weight: 0
+    - bone1: {fileID: 400116}
+      bone2: {fileID: 400040}
+      bone3: {fileID: 400220}
+      direction: {x: 1, y: 0, z: 0}
+      rotationOffset: {x: 0, y: 0, z: 0, w: 0}
+      weight: 0
+    spineMapping:
+      spineBones:
+      - {fileID: 400078}
+      - {fileID: 400202}
+      - {fileID: 400304}
+      - {fileID: 400298}
+      leftUpperArmBone: {fileID: 400008}
+      rightUpperArmBone: {fileID: 400276}
+      leftThighBone: {fileID: 400190}
+      rightThighBone: {fileID: 400116}
+      iterations: 3
+      twistWeight: 1
+    boneMappings:
+    - bone: {fileID: 400046}
+      maintainRotationWeight: 0
+    limbMappings:
+    - parentBone: {fileID: 400180}
+      bone1: {fileID: 400008}
+      bone2: {fileID: 400094}
+      bone3: {fileID: 400020}
+      maintainRotationWeight: 0
+      weight: 1
+    - parentBone: {fileID: 400270}
+      bone1: {fileID: 400276}
+      bone2: {fileID: 400286}
+      bone3: {fileID: 400158}
+      maintainRotationWeight: 0
+      weight: 1
+    - parentBone: {fileID: 0}
+      bone1: {fileID: 400190}
+      bone2: {fileID: 400250}
+      bone3: {fileID: 400082}
+      maintainRotationWeight: 1
+      weight: 1
+    - parentBone: {fileID: 0}
+      bone1: {fileID: 400116}
+      bone2: {fileID: 400040}
+      bone3: {fileID: 400220}
+      maintainRotationWeight: 1
+      weight: 1
+    rootNode: {fileID: 400304}
+    spineStiffness: 0.5
+    pullBodyVertical: 0.5
+    pullBodyHorizontal: 0
