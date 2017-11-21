@@ -211,7 +211,10 @@ public class InvokeEventB3 : MonoBehaviour {
 				new Sequence(
 					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("CUTTHROAT", 2000),
 					Daniel.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cry", 2000),
-					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cheer", 2000))));
+					Richard.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("Cheer", 2000)
+				)
+			)
+		);
 	}
 
 	public Node Summon(GameObject targ)

@@ -22,7 +22,7 @@ public class MyBehaviorTree : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		participant.transform.localScale += new Vector3 (.1f, .1f, .1f);
 	}
 
 	protected Node ST_ApproachAndWait(Transform target)
