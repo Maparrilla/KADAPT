@@ -10,6 +10,7 @@ public class InvokeEventB4 : MonoBehaviour {
 	public GameObject R1;
 	public GameObject R2;
 	public GameObject Tom;
+	public GameObject Harry;
 	public RootMotion.FinalIK.InteractionObject RedShroom;
 	public RootMotion.FinalIK.InteractionObject GreenShroom;
 	public RootMotion.FinalIK.FullBodyBipedEffector hand;
@@ -25,6 +26,9 @@ public class InvokeEventB4 : MonoBehaviour {
 	private bool ateRed = false;
 	private bool ateGreen = false;
 	private bool grown = false;
+	private bool cheer = false;
+	private bool hgrown = true;
+	private bool cry = false;
 
 	// Use this for initialization
 	void Start () {
@@ -37,10 +41,10 @@ public class InvokeEventB4 : MonoBehaviour {
 	{
 		return new SequenceParallel (
 			Crowd(),
+			Evil(),
 			new Sequence(
 				walk(),
-				Direct(),
-				GoToRoom()
+				Direct()
 			)
 		);
 	}
@@ -49,7 +53,7 @@ public class InvokeEventB4 : MonoBehaviour {
 	{
 		System.Random rnd = new System.Random ();
 		int num = rnd.Next (0, 2);
-		if (1 == 1) {
+		if (num == 1) {
 			return new Sequence (
 				Tom.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => RedShroom.transform.position)),
 				new SequenceParallel (
@@ -63,7 +67,8 @@ public class InvokeEventB4 : MonoBehaviour {
 						Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => RedShroom.transform.position - (RedShroom.transform.position - Daniel.transform.position).normalized)),
 						Daniel.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("EAT", 1000),
 						new LeafInvoke(() => ateRed = true),
-						new LeafInvoke(() => Daniel.transform.GetChild (7).gameObject.SetActive (true))
+						new LeafInvoke(() => Daniel.transform.GetChild (7).gameObject.SetActive (true)),
+						GetRedChest()
 					)
 				)
 			);
@@ -80,7 +85,8 @@ public class InvokeEventB4 : MonoBehaviour {
 						Daniel.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000),
 						Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => GreenShroom.transform.position - (GreenShroom.transform.position - Daniel.transform.position).normalized)),
 						Daniel.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("EAT", 1000),
-						new LeafInvoke (() => ateGreen = true)
+						new LeafInvoke (() => ateGreen = true),
+						GetGreenChest()
 					)
 				)
 			);
@@ -93,7 +99,8 @@ public class InvokeEventB4 : MonoBehaviour {
 		Func<bool> act2 = () => (ateGreen);
 
 		return new Selector (
-			new SequenceParallel (
+			//new LeafInvoke(() => print(act1())),
+			new Sequence (
 				new LeafAssert (act1),
 				new Sequence (
 					Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Boulder.transform.position - new Vector3 (0f, 2f, 2.5f))),
@@ -103,9 +110,10 @@ public class InvokeEventB4 : MonoBehaviour {
 					PushBoulder ()
 				)
 			),
-			new SequenceParallel (
+			new Sequence (
 				new LeafAssert (act2),
-				Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (-5, 0, 16)))
+				Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(0,0,0)))
+				//GetGreenChest()
 			)
 		);
 	}
@@ -121,14 +129,39 @@ public class InvokeEventB4 : MonoBehaviour {
 	protected Node GetRedChest()
 	{
 		return new Sequence (
+			Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Boulder.transform.position - new Vector3 (0f, 2f, 2.5f))),
+			Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Tom.transform.position)),
+			Daniel.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("CALLOVER", 1000),
+			Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Boulder.transform.position)),
+			Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("TALKING ON PHONE", 2000),
 			Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => RedChest.transform.position - (RedChest.transform.position - Daniel.transform.position).normalized)),
-			new SequenceParallel(
-				new Sequence(
-					new LeafWait(1000),
-					new LeafInvoke(() => RedChest.SetActive(false))
+			new SequenceParallel (
+				new Sequence (
+					new LeafWait (1500),
+					new LeafInvoke (() => RedChest.SetActive (false)),
+					new LeafInvoke (() => Harry.transform.position = new Vector3 (15, 0, 21))
 				),
 				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("PICKUPLEFT", 1000)
 			),
+			new LeafInvoke (() => RedChest.transform.position = new Vector3 (0f, 0f, 11.5f)),
+			ShowChest ()
+		);
+	}
+
+	protected Node GetGreenChest()
+	{
+		return new Sequence (
+			Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => GreenChest.transform.position - new Vector3(0,4,0) - (GreenChest.transform.position - new Vector3(0,4,0) - Daniel.transform.position).normalized*3f)),
+			new SequenceParallel(
+				new Sequence(
+					new LeafWait(1000),
+					new LeafInvoke(() => GreenChest.SetActive(false)),
+					new LeafInvoke (() => Harry.transform.position = new Vector3 (-15, 0, 21))
+				),
+				Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace(Val.V(() => GreenChest.transform.position)),
+				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("DUCK", 1000)
+			),
+			new LeafInvoke (() => GreenChest.transform.position = new Vector3 (0f, 0f, 11.5f)),
 			ShowChest()
 		);
 	}
@@ -137,14 +170,15 @@ public class InvokeEventB4 : MonoBehaviour {
 	{
 		//Vector3 temp = new Vector3 (0f, 0f, 11.5f);
 		return new Sequence (
-			Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f)- Daniel.transform.position).normalized * 1.5f)),
+			Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - Daniel.transform.position).normalized * 1.5f)),
 			new SequenceParallel (
 				new Sequence (
 					new LeafWait (1000),
 					new LeafInvoke (() => RedChest.SetActive (true)),
-					new LeafInvoke(() => RedChest.transform.position = new Vector3 (0f, 0f, 11.5f))
+					new LeafInvoke (() => GreenChest.SetActive (true)),
+					new LeafInvoke (() => cheer = true)
 				),
-				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("PICKUPLEFT", 2000)
+				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("PICKUPLEFT", 1000)
 			)
 		);
 	}
@@ -162,6 +196,26 @@ public class InvokeEventB4 : MonoBehaviour {
 		Val<Vector3> r1p = Val.V(() => Point1.transform.position);
 		Val<Vector3> r2p = Val.V(() => Point2.transform.position);
 
+		Func<bool> cheerAssert = () => (!cheer);
+		Func<bool> cryAssert = () => (!cry);
+
+		Node talking = new DecoratorLoop (
+			               new SequenceParallel (
+				               new SequenceShuffle (
+					               R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
+					               R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
+					               R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000)
+				               ),
+				               new SequenceShuffle (
+					               R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
+					               R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
+					               R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000)
+				               )
+			               )
+		               );
+		Node TalkLoop = new DecoratorLoop (new SequenceParallel (new DecoratorLoop (new LeafAssert (cheerAssert)), talking));
+		Node PreCry = new DecoratorLoop (new LeafAssert (cryAssert));
+
 		return new Sequence (
 			new SequenceParallel (
 				R1.GetComponent<BehaviorMecanim> ().Node_GoTo (r1p),
@@ -171,36 +225,123 @@ public class InvokeEventB4 : MonoBehaviour {
 				R1.GetComponent<BehaviorMecanim> ().ST_TurnToFace (r2p),
 				R2.GetComponent<BehaviorMecanim> ().ST_TurnToFace (r1p)
 			),
-			new DecoratorLoop (
-				new SequenceParallel (
-					new SequenceShuffle (
-						R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
-						R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
-						R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000),
-						R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 1000)
-					),
-					new SequenceShuffle (
-						R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
-						R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
-						R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000),
-						R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 1000)
-					)
-				)
+			new DecoratorForceStatus (RunStatus.Success, TalkLoop),
+			Celebrate(),
+			new DecoratorForceStatus(RunStatus.Success, PreCry),
+			new SequenceParallel (
+				R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true),
+				R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true)
 			)
+		);
+	}
 
+	protected Node Celebrate()
+	{
+		return new Sequence (
+			new SequenceParallel (
+				R1.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - R1.transform.position).normalized * 3f)),
+				R2.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - R2.transform.position).normalized * 3f))
+			),
+			new SequenceParallel (
+				R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true),
+				R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true)
+			)
+		);
+	}
+
+	protected Node Evil()
+	{
+		Func<bool> act = () => (!cheer);
+		Node actLoop = new DecoratorForceStatus (RunStatus.Success, new DecoratorLoop (new LeafAssert (act)));
+
+		return new Sequence (
+			actLoop,
+			HarryPower(),
+			HarryKill(),
+			HarryRun()
 		);
 
 
+
+	}
+
+	protected Node HarryPower()
+	{
+		Func<bool> RedAssert = () => (ateRed);
+		Func<bool> GreenAssert = () => (ateGreen);
+		Node RedTrigger = new DecoratorLoop (new LeafAssert (RedAssert));
+		Node GreenTrigger = new DecoratorLoop (new LeafAssert (GreenAssert));
+
+
+		return new Selector (
+			new Sequence (
+				new LeafInvoke (() => print (RedAssert ())),
+				new LeafAssert (RedAssert),
+				new LeafInvoke (() => Harry.SetActive (true)),
+				Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => RedShroom.transform.position - (RedShroom.transform.position - Harry.transform.position).normalized)),
+				Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("EAT", 1000),
+				new LeafInvoke (() => Harry.transform.GetChild (4).gameObject.SetActive (true))
+			),
+			new Sequence (
+				new LeafInvoke (() => print (GreenAssert ())),
+				new LeafAssert (GreenAssert),
+				new LeafInvoke (() => Harry.SetActive (true)),
+				Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => GreenShroom.transform.position - (GreenShroom.transform.position - Harry.transform.position).normalized)),
+				Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("EAT", 1000),
+				new LeafInvoke (() => hgrown = false)
+			)
+		);
+	}
+
+	protected Node HarryKill()
+	{
+		return new Sequence (
+			Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Daniel.transform.position - (Daniel.transform.position - Harry.transform.position).normalized * 2)),
+			Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Harry.transform.position)),
+			Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 700),
+			Daniel.GetComponent<BehaviorMecanim> ().Node_BodyAnimation ("DYING", true),
+			new LeafInvoke (() => cry = true)
+		);
+	}
+
+	protected Node HarryRun()
+	{
+		Func<bool> RedAssert = () => (ateRed);
+		Func<bool> GreenAssert = () => (ateGreen);
+		Node RedTrigger = new DecoratorLoop (new LeafAssert (RedAssert));
+		Node GreenTrigger = new DecoratorLoop (new LeafAssert (GreenAssert));
+
+
+		return new Selector (
+			new Sequence (
+				new LeafInvoke (() => print (RedAssert ())),
+				new LeafAssert (RedAssert),
+				Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(16,0,21))),
+				new LeafInvoke (() => Harry.SetActive(false))
+			),
+			new Sequence (
+				new LeafInvoke (() => print (GreenAssert ())),
+				new LeafAssert (GreenAssert),
+				Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(-16,0,21))),
+				new LeafInvoke (() => Harry.SetActive(false))
+			)
+		);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (ateRed) {
-			Daniel.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs(Time.frameCount % 20 - 10);
+			Daniel.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
+			Harry.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
 		} else if (ateGreen && !grown) {
 			Daniel.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
 			if (Daniel.transform.localScale.x > 2.0f) {
 				grown = true;
+			}
+		} else if (ateGreen && !hgrown) {
+			Harry.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
+			if (Harry.transform.localScale.x > 2.0f) {
+				hgrown = true;
 			}
 		}
 	}
