@@ -91,7 +91,8 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 				SelectArc_Intro(),
 				SelectArc_AteMushroom(),
 				SelectArc_CarryOut(),
-				SelectArc_EvilWins()
+				SelectArc_EvilWins(),
+				SelectArc_End()
 			)
 		);
 	}
@@ -439,7 +440,6 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 						new LeafInvoke (() => Debug.Log("DO SELECTORS EVER REACH ALTERNATIVE?")),
 						new LeafInvoke (() => Harry.SetActive (true)),
 						Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (-5.0f, 0.0f, 12.0f))),
-						// Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => GreenShroom.transform.position - (GreenShroom.transform.position - Harry.transform.position).normalized)),
 						Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("EAT", 1000),
 						new LeafInvoke (() => hgrown = false)
 					)
@@ -481,7 +481,8 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 								Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(-16,0,21))),
 								new LeafInvoke (() => Harry.SetActive(false))
 							)
-						)
+						),
+						new LeafInvoke(() => currentArc = "EvilWins")
 					),
 					new Sequence (
 						// Daniel Fuckin Rocks Harry... The crowd cheers
@@ -494,10 +495,23 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 						new SequenceParallel (
 							R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true),
 							R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true)
+						),
+						new Sequence (
+							Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(0,0,0)))
 						)
+						// new LeafInvoke(() => currentArc = "EvilWins")
 					)
 				)
 			)
+		);
+	}
+
+	protected Node SelectArc_End()
+	{
+		Func<bool> arc = () => (currentArc == "EvilWins");
+
+		return new DecoratorLoop (
+			new LeafAssert (arc)
 		);
 	}
 }
