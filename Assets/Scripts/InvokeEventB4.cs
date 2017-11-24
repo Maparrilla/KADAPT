@@ -93,39 +93,6 @@ public class InvokeEventB4 : MonoBehaviour {
 		}
 	}
 
-	protected Node GoToRoom()
-	{
-		Func<bool> act1 = () => (ateRed);
-		Func<bool> act2 = () => (ateGreen);
-
-		return new Selector (
-			//new LeafInvoke(() => print(act1())),
-			new Sequence (
-				new LeafAssert (act1),
-				new Sequence (
-					Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Boulder.transform.position - new Vector3 (0f, 2f, 2.5f))),
-					Daniel.GetComponent<BehaviorMecanim>().ST_TurnToFace(Val.V(() => Tom.transform.position)),
-					Daniel.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("CALLOVER", 1000),
-					Daniel.GetComponent<BehaviorMecanim>().ST_TurnToFace(Val.V(() => Boulder.transform.position)),
-					PushBoulder ()
-				)
-			),
-			new Sequence (
-				new LeafAssert (act2),
-				Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(0,0,0)))
-				//GetGreenChest()
-			)
-		);
-	}
-
-	protected Node PushBoulder()
-	{
-		return new Sequence (
-			Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("TALKING ON PHONE", 2000),
-			GetRedChest ()
-		);
-	}
-
 	protected Node GetRedChest()
 	{
 		return new Sequence (
@@ -310,7 +277,7 @@ public class InvokeEventB4 : MonoBehaviour {
 		Func<bool> GreenAssert = () => (ateGreen);
 		Node RedTrigger = new DecoratorLoop (new LeafAssert (RedAssert));
 		Node GreenTrigger = new DecoratorLoop (new LeafAssert (GreenAssert));
-
+			
 
 		return new Selector (
 			new Sequence (
