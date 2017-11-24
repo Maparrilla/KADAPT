@@ -35,7 +35,16 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 	private bool hgrown = true;
 	private bool cry = false;
 	private Camera mainCamera;
+
+	private string currentArc = "Intro";
+	private string eatenMushroom = "None";
 	private bool uncheckedClickReceived;
+	private bool blockClicks;
+	private GameObject selectedObject;
+	private Vector3 selectedPoint;
+
+	private bool readyToKickHarry = false;
+	private bool kickedHarry = false;
 
 	// Use this for initialization
 	void Start () {
@@ -46,10 +55,26 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 		behaviorAgent.StartBehavior ();
 	}
 
-	private string currentArc = "Intro";
-	private string eatenMushroom = "None";
-	private GameObject selectedObject;
-	private Vector3 selectedPoint;
+	// Update is called once per frame
+	void Update () {
+		if (Input.GetButtonDown ("Fire1") && !blockClicks)
+			uncheckedClickReceived = true;
+
+		if (eatenMushroom == "Red") {
+			Daniel.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
+			Harry.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
+		} else if (eatenMushroom == "Green" && !grown) {
+			Daniel.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
+			if (Daniel.transform.localScale.x > 2.0f) {
+				grown = true;
+			}
+		} else if (eatenMushroom == "Green" && !hgrown) {
+			Harry.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
+			if (Harry.transform.localScale.x > 2.0f) {
+				hgrown = true;
+			}
+		}
+	}
 
 	protected Node InteractiveBehaviorTree()
 	{
@@ -84,6 +109,7 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 				new Sequence (
 					// Runs if a click input has been received
 					new LeafAssert(() => uncheckedClickReceived),
+					new LeafInvoke(() => blockClicks = true),
 					new LeafInvoke(() => uncheckedClickReceived = false),
 					new LeafInvoke(() => Debug.Log("CLICK RECEIVED")),
 					new LeafInvoke(() => ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward)),
@@ -127,6 +153,12 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 											new LeafInvoke(() => Debug.Log("GREEN CHEST SELECTED")),
 											PickUpGreenChest()
 										)
+										,
+										new Sequence (
+											new LeafAssert(() => selectedObject == Harry),
+											new LeafInvoke(() => Debug.Log("HARRY SELECTED")),
+											KickHarry()
+										)
 									)
 								),
 								new Sequence (
@@ -137,7 +169,8 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 						new Sequence (
 							new LeafInvoke (() => Debug.Log("Click not registered"))
 						)
-					)
+					),
+					new LeafInvoke(() => blockClicks = false)
 				)
 			)
 		);
@@ -259,7 +292,25 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 			)
 		);
 	}
-
+			
+	protected Node KickHarry()
+	{
+		return new Selector (
+			new Sequence (
+				new LeafAssert (() => currentArc == "EvilWins"),
+				new LeafAssert (() => readyToKickHarry),
+				new LeafInvoke (() => kickedHarry = true),
+				// Daniel Fuckin Rocks Harry...
+				Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Daniel.transform.position - (Daniel.transform.position - Harry.transform.position).normalized * 2)),
+				Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Harry.transform.position)),
+				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 600),
+				Harry.GetComponent<BehaviorMecanim> ().Node_BodyAnimation ("DYING", true)
+			),
+			new Sequence (
+				new LeafInvoke (() => Debug.Log ("I'm gonna kick him when he's closer."))
+			)
+		);
+	}
 
 
 	protected Node SelectArc_Intro()
@@ -312,6 +363,29 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 				new SequenceParallel (
 					R1.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - R1.transform.position).normalized * 3f)),
 					R2.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - R2.transform.position).normalized * 3f))
+				),
+				new DecoratorLoop (
+					new SequenceParallel (
+						new SequenceShuffle (
+							R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
+							R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
+							R1.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000)
+						),
+						new SequenceShuffle (
+							R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
+							R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
+							R2.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000)
+						),
+						new SequenceShuffle (
+							Tom.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("ACKNOWLEDGE", 1000),
+							Tom.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("HEADNOD", 1000),
+							Tom.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("LOOKAWAY", 1000),
+							new SelectorShuffle (
+								Tom.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => R2.transform.position)),
+								Tom.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => R1.transform.position))
+							)
+						)
+					)
 				)
 			)
 		);
@@ -326,6 +400,7 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 			new Sequence (
 				new LeafAssert(arc),
 				new LeafInvoke (() => Debug.Log ("Running CarryOut arc")),
+				new LeafInvoke (() => blockClicks = true),
 				Daniel.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3 (0f, 0f, 11.5f) - (new Vector3 (0f, 0f, 11.5f) - Daniel.transform.position).normalized * 1.5f)),
 				Daniel.GetComponent<BehaviorMecanim> ().ST_PlayBodyGesture ("PICKUPLEFT", 1000),
 				new LeafInvoke (() => RedChest.SetActive (true)),
@@ -334,6 +409,7 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 					R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true),
 					R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true)
 				),
+				new LeafInvoke (() => blockClicks = false),
 				new LeafInvoke(() => currentArc = "EvilWins")
 			)
 		);
@@ -348,6 +424,7 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 			new Sequence (
 				new LeafAssert (arc),
 				new LeafInvoke (() => Debug.Log ("Running EvilWins arc")),
+				new LeafInvoke (() => blockClicks = true),
 				// Harry Gets Powerful
 				new Selector (
 					new Sequence (
@@ -367,57 +444,60 @@ public class InvokeEventB4_P2 : MonoBehaviour {
 						new LeafInvoke (() => hgrown = false)
 					)
 				),
-				// Harry Fuckin Rocks Daniel... The crowd is sad.
+				// Harry Moves toward Daniel...
 				new Sequence (
 					Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => Daniel.transform.position - (Daniel.transform.position - Harry.transform.position).normalized * 2)),
-					Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Harry.transform.position)),
-					Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 700),
-					Daniel.GetComponent<BehaviorMecanim> ().Node_BodyAnimation ("DYING", true),
-					new SequenceParallel (
-						R1.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000),
-						R2.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000)
-					),
-					new SequenceParallel (
-						R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true),
-						R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true)
-					)
+					Daniel.GetComponent<BehaviorMecanim> ().ST_TurnToFace (Val.V (() => Harry.transform.position))
 				),
-				// Harry Walks Away, the evil bastard he is
-				new Selector (
+				new LeafInvoke (() => blockClicks = false),
+				new LeafInvoke (() => readyToKickHarry = true),
+				new LeafWait (2000),
+
+				new Sequence (
 					new Sequence (
-						new LeafAssert (() => eatenMushroom == "Red"),
-						Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(16,0,21))),
-						new LeafInvoke (() => Harry.SetActive(false))
+						// Harry Fuckin Rocks Daniel... The crowd is sad.
+						new LeafAssert(() => !kickedHarry),
+						new LeafInvoke (() => blockClicks = true),
+						Harry.GetComponent<BehaviorMecanim> ().ST_PlayFaceGesture ("SPEW", 600),
+						Daniel.GetComponent<BehaviorMecanim> ().Node_BodyAnimation ("DYING", true),
+						new SequenceParallel (
+							R1.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000),
+							R2.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000)
+						),
+						new SequenceParallel (
+							R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true),
+							R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("Cry", true)
+						),
+
+						// Harry Walks Away, the evil bastard he is
+						new Selector (
+							new Sequence (
+								new LeafAssert (() => eatenMushroom == "Red"),
+								Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(16,0,21))),
+								new LeafInvoke (() => Harry.SetActive(false))
+							),
+							new Sequence (
+								new LeafAssert (() => eatenMushroom == "Green"),
+								Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(-16,0,21))),
+								new LeafInvoke (() => Harry.SetActive(false))
+							)
+						)
 					),
 					new Sequence (
-						new LeafAssert (() => eatenMushroom == "Green"),
-						Harry.GetComponent<BehaviorMecanim> ().Node_GoTo (Val.V (() => new Vector3(-16,0,21))),
-						new LeafInvoke (() => Harry.SetActive(false))
+						// Daniel Fuckin Rocks Harry... The crowd cheers
+						new LeafAssert(() => kickedHarry),
+						new LeafInvoke(() => Debug.Log("Alternate ending reached!")),
+						new SequenceParallel (
+							R1.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000),
+							R2.GetComponent<BehaviorMecanim> ().ST_PlayHandGesture ("Surprised", 1000)
+						),
+						new SequenceParallel (
+							R1.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true),
+							R2.GetComponent<BehaviorMecanim> ().Node_HandAnimation ("CHEER", true)
+						)
 					)
 				)
 			)
 		);
-	}
-
-
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetButtonDown ("Fire1"))
-			uncheckedClickReceived = true;
-
-		if (eatenMushroom == "Red") {
-			Daniel.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
-			Harry.transform.Find ("Light").GetComponent<Light> ().intensity = Mathf.Abs (Time.frameCount % 20 - 10);
-		} else if (eatenMushroom == "Green" && !grown) {
-			Daniel.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
-			if (Daniel.transform.localScale.x > 2.0f) {
-				grown = true;
-			}
-		} else if (eatenMushroom == "Green" && !hgrown) {
-			Harry.transform.localScale += new Vector3 (0.1f, 0.1f, 0.1f);
-			if (Harry.transform.localScale.x > 2.0f) {
-				hgrown = true;
-			}
-		}
 	}
 }
